@@ -5,6 +5,9 @@ class User < ActiveRecord::Base
   enum role_type: [ :student, :educator,:admin ]
   self.primary_key = :id
   # belongs_to :educator
+  has_many :courses
+  validates_length_of :id, :maximum => 8
+  # validates_length_of :foo, :minimum => 5, :maximum => 5, :allow_blank => true
   
   validates :id, uniqueness: true
   devise :database_authenticatable, :registerable,
@@ -14,7 +17,7 @@ class User < ActiveRecord::Base
   
   def create_profile
     if(self.educator?)
-      Educator.create(user_id:self)
+      Educator.create(user_id:self.id)
     elsif(self.student?)
       Student.create(user_id:self.id)
       

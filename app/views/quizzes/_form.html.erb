@@ -1,0 +1,48 @@
+<%= form_for([@course,@quiz]) do |f| %>
+  <% if @quiz.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@quiz.errors.count, "error") %> prohibited this quiz from being saved:</h2>
+
+      <ul>
+      <% @quiz.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <!--<div class="field">-->
+  <!--  <%#= f.label :course_id %><br>-->
+  <!--  <%#= f.text_field :course_id %>-->
+  <!--</div>-->
+  
+  <!--<div class="field">-->
+  <!--  <%#= f.label :course %><br>-->
+  <!--  <%#= f.collection_select :course_id,current_user.courses,:id,:name %><br/>-->
+  <!--</div>-->
+  <div class="field">
+    <%= f.label :Status %><br>
+    <!--<= f.number_field :event_type %>-->
+    <%= f.select(:status_type, Quiz.status_types.keys.map {|key| [key.humanize, key]}) %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :number_questions %><br>
+    <%= f.number_field :number_questions %>
+  </div>
+  
+  <%= f.fields_for :questions do |builder| %>
+    <%#= render "question_fields", :f => builder %>
+    <%#= builder.label :Question %><br>
+    <%#= builder.text_area :content,:row => 3 %><br>
+    <%= render "question_fields", :f => builder %>
+  <% end %>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

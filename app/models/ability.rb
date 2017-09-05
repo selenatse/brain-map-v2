@@ -9,17 +9,26 @@ class Ability
       can :manage, :all
       # can :manage, :educator
     elsif(user.educator?)
+      can :read, :all
       can :create,Course
       can :update,Course, :user_id => user.id
       can :destroy,Course, :user_id => user.id
-      # can :read,Course, :educator_id => Educator.where(user_id: user.id).first.id
-      can :read, :all
+      can :read,Course, :user_id => user.id
+      can :manage,Enrolled
+      can :update,Educator,:user_id => user.id
+      
     elsif user.student?
       cannot :manage,Course
       can :read, [Course]
       cannot :manage,Educator
       cannot :manage,Student
-      can :update,:user_id => user.id
+      can :update,Student,:user_id => user.id
+      
+      can :update,Enrolled,:status_type do |enrolled|
+        enrolled.student_id == Student.find_by_user_id(user.id).id
+      end
+      # can :manage, Enrolled
+      # can :update,Enrolled,:student_id => Student.where(user_id:user.id).first
       
       # cann
     

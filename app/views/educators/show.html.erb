@@ -6,13 +6,17 @@
 </p>
 
 <p>
-  <strong>Name:</strong>
-  <%= @educator.name %>
+  <strong>First Name:</strong>
+  <%= @educator.first_name %>
+</p>
+<p>
+  <strong>Last Name:</strong>
+  <%= @educator.last_name %>
 </p>
 
 <p>
   <strong>Role:</strong>
-  <%= @educator.role_type %>
+  <%= @educator.role %>
 </p>
 
 <%= link_to 'Edit', edit_educator_path(@educator) %> |

@@ -10,8 +10,17 @@
   
   <p class="navbar-text pull-right">
     <% if user_signed_in? %>
+    
       Logged in as <strong><%= current_user.id %></strong>.
-      <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
+      
+      <% if (current_user.student?) %>
+        <%= link_to 'Edit Student profile', edit_student_path(Student.find_by_user_id(current_user.id)) %> |
+      <% elsif(current_user.educator?) %>
+        <%= link_to 'Edit Educator profile', edit_educator_path(Educator.find_by_user_id(current_user.id)) %> |
+      
+      <% end %>
+      
+      <%= link_to 'Edit Credentials', edit_user_registration_path, :class => 'navbar-link' %> |
       <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
     <% else %>
       <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |

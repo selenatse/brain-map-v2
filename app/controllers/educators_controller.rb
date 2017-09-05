@@ -70,6 +70,6 @@ class EducatorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def educator_params
-      params.require(:educator).permit(:user_id, :name, :role)
+      params.require(:educator).permit(:user_id, :first_name,:last_name, :role)
     end
 end

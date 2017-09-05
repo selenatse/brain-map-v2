@@ -1,5 +1,10 @@
 <p id="notice"><%= notice %></p>
 
+<%# if (current_user.student?) %>
+<!--Name : <%#= Student.find_by_user_id(current_user.id).first_name + " " + Student.find_by_user_id(current_user.id).first_name %>-->
+
+<%# end %>
+
 <h1>Listing Courses</h1>
 
 <table>
@@ -9,6 +14,10 @@
       <th>OwnerId</th>
       <th>Course Code</th>
       <th>Course Name</th>
+      <% if current_user.student?%>
+        <th>Student Status</th>
+      
+      <% end %>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -20,14 +29,35 @@
         <td><%= course.user_id %></td>
         <td><%= course.id %></td>
         <td><%= course.name %></td>
+        
+        <% if current_user.student? and %>
+          <td><%= @student.enrolled.where(course_id:course.id).first.status_type %></td>
+      <td><%#= link_to("Enroll in the Course", enrolled_path( @student.enrolled.where(course_id: course).first,{:course_id: course.id,:status_type => 1}), :method => :put, :confirm => "Are you sure?") %></td>
+      
+        <% if(@student.enrolled.where(course_id:course.id).first.inactive?) %>
+          <td><%= link_to "Enroll in the Course", 
+              enrolled_path(@student.enrolled.where(course_id: course).first, 
+                        :enrolled => { :status_type => "active"}),
+              :method => :put, 
+              :confirm => "Are you sure?" %> </td>
+            <% end %>
+      <% end %>
+        
         <td><%= link_to 'Show', course %></td>
-        <td><%= link_to 'Edit', edit_course_path(course) %></td>
-        <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        
+        <% if can? :update, course %>
+          <td><%= link_to 'Edit', edit_course_path(course) %></td>
+        <% end %>
+        
+        <% if can? :destroy, course %>
+          <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Course', new_course_path %>
+<% if can? :create, Course %>
+  <%= link_to 'New Course', new_course_path %>
+<% end %>

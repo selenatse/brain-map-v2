@@ -13,6 +13,9 @@ class CoursesController < ApplicationController
       @courses = Course.where(user_id: current_user.id )
     elsif(current_user.present? && current_user.student?)
       puts 'we are in stduent'
+      @student = Student.where(user_id:current_user.id).first
+      @courses= @student.courses
+       
     end
     
   end
@@ -37,8 +40,8 @@ class CoursesController < ApplicationController
     @course = Course.new(course_params)
     
     if(current_user.educator?)
-      # puts
-      # @course.user_id = current_user.id
+      puts
+      @course.user_id = current_user.id
     end
     
 
@@ -56,6 +59,11 @@ class CoursesController < ApplicationController
   # PATCH/PUT /courses/1
   # PATCH/PUT /courses/1.json
   def update
+    
+    if(current_user.educator?)
+      # puts
+      @course.user_id = current_user.id
+    end
     respond_to do |format|
       if @course.update(course_params)
         format.html { redirect_to @course, notice: 'Course was successfully updated.' }
@@ -85,7 +93,7 @@ class CoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      params.require(:course).permit(:id,:name,:user_id)
+      params.require(:course).permit(:id,:name,:stduent_id,:status)
       # params.require(:educator).permit(:user_id, :name, :role)
     end
 end
