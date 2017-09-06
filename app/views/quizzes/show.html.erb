@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<div class="container">
 <p>
   <strong>Name:</strong>
   <%= @quiz.name %>
@@ -16,9 +16,36 @@
 </p>
 
 <p>
-  <strong>Number questions:</strong>
+  <strong>Number of questions:</strong>
   <%= @quiz.questions.count %>
 </p>
 
+<p>
+  <h3>Questions</h3>
+  
+  <ol>
+    <% @quiz.questions.each do |question|%>
+    <li>
+      <%=question.content %>
+    <h4>Options</h4>
+      <ul>
+        <% question.answers.each do |ans|%>
+        <li>
+          <%= ans.content %> <% if (ans.is_correct) %>(Correct Answer)<% end %>
+        </li>
+        <% end %>
+        
+      </ul>
+    
+      
+    </li>
+    <% end %>
+  </ol>
+  
+</p>
+
+
+
 <%= link_to 'Edit', edit_course_quiz_path(@course,@quiz) %> |
 <%= link_to 'Back', course_quizzes_path %>
+</div>

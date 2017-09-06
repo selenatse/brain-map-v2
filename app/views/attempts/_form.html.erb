@@ -1,0 +1,57 @@
+<%= form_for [@course,@quiz,@attempt] do |f| %>
+  <% if @attempt.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@attempt.errors.count, "error") %> prohibited this attempt from being saved:</h2>
+
+      <ul>
+      <% @attempt.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!--<div class="field">-->
+  <!--  <%#= f.label :student_id %><br>-->
+  <!--  <%#= f.number_field :student_id %>-->
+  <!--</div>-->
+  <!--<div class="field">-->
+  <!--  <%#= f.label :number_of_attempts %><br>-->
+  <!--  <%#= f.number_field :number_of_attempts %>-->
+  <!--</div>-->
+  <!--<div class="field">-->
+  <!--  <%#= f.label :quiz_id %><br>-->
+  <!--  <%#= f.number_field :quiz_id %>-->
+  <!--</div>-->
+  
+  No of Questions in this quiz: <%= @quiz.questions.count %> <br>
+  <% @attempt.responses.new %>
+  <% @quiz.questions.each do |question| %>
+  
+  
+  <strong>Question: <%= question.content %><br></strong>
+  No of Options for this questions: <%= question.answers.count %><br>
+  
+  <% question.answers.each do |answer| %>
+    <%#= answer %>
+      
+      
+    
+      <%= f.fields_for :responses do |builder| %>
+      
+        <!--%= f.label calendar_color.id do %> >-->
+        <%#= index %>
+        <%= builder.radio_button :answer_id, "1" %> <%= answer.content %><br>
+        <%= builder.hidden_field :question_id, :value => question.id %>
+        <%= builder.hidden_field :answer_id, :value => answer.id %>
+        <%# builder.hidden_field :student_id, :value =>  %>
+        
+        
+      <% end %>
+    <% end %>
+  <% end %>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

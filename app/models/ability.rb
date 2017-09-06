@@ -16,6 +16,7 @@ class Ability
       can :read,Course, :user_id => user.id
       can :manage,Enrolled
       can :update,Educator,:user_id => user.id
+      can :manage, Quiz
       
     elsif user.student?
       cannot :manage,Course
@@ -24,6 +25,7 @@ class Ability
       cannot :manage,Student
       can :update,Student,:user_id => user.id
       
+      can :read,Quiz,:status_type =>"active"
       can :update,Enrolled,:status_type do |enrolled|
         enrolled.student_id == Student.find_by_user_id(user.id).id
       end

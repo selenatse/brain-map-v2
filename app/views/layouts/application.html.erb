@@ -11,7 +11,7 @@
   <p class="navbar-text pull-right">
     <% if user_signed_in? %>
     
-      Logged in as <strong><%= current_user.id %></strong>.
+      Logged in as <strong><%= current_user.id %></strong>|
       
       <% if (current_user.student?) %>
         <%= link_to 'Edit Student profile', edit_student_path(Student.find_by_user_id(current_user.id)) %> |

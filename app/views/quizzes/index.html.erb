@@ -1,8 +1,10 @@
 <p id="notice"><%= notice %></p>
 
+<div class="container">
+
 <h1>Listing Quizzes</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Name</th>
@@ -20,9 +22,17 @@
         <td><%= quiz.course_id %></td>
         <td><%= quiz.status_type %></td>
         <td><%= quiz.questions.count %></td>
-        <td><%= link_to 'Show', course_quiz_url(@course,quiz) %></td>
-        <td><%= link_to 'Edit', edit_course_quiz_path(@course,quiz) %></td>
-        <td><%= link_to 'Destroy', [@course,quiz], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        
+        
+        <% if current_user.student? %>
+          <td><%= link_to 'Attempt the Quiz', new_course_quiz_attempt_url(@course,quiz) %></td>
+        <% elsif(current_user.educator?) %>
+          <td><%= link_to 'Show', course_quiz_url(@course,quiz) %></td>
+          <td><%= link_to 'Edit', edit_course_quiz_path(@course,quiz) %></td>
+          <td><%= link_to 'Destroy', [@course,quiz], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      
+      
       </tr>
     <% end %>
   </tbody>
@@ -31,3 +41,4 @@
 <br>
 
 <%= link_to 'New Quiz', new_course_quiz_path %>
+</div>

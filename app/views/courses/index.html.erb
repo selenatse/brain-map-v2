@@ -7,7 +7,7 @@
 
 <h1>Listing Courses</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       
@@ -52,6 +52,18 @@
         <% if can? :destroy, course %>
           <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
+        
+        <% if can? :create, Quiz %>
+          <td><%= link_to 'Make Quiz', new_course_quiz_path(course) %></td>
+        <% end %>
+        
+        <% if can? :create, Enrolled %>
+          <td> <%= link_to 'Add Students in Course', new_enrolled_path %></td>
+        <% end %>
+        
+        <td> <%= link_to 'View Quizzes in this Course',course_quizzes_path(course)  %></td>
+        
+        
       </tr>
     <% end %>
   </tbody>
