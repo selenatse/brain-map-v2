@@ -1,3 +1,5 @@
+
+<div class="container">
 <p id="notice"><%= notice %></p>
 
 <%# if (current_user.student?) %>
@@ -25,45 +27,46 @@
   <tbody>
     <% @courses.each do |course| %>
       <tr>
+        <%# if can? :read, course %>
         
-        <td><%= course.user_id %></td>
-        <td><%= course.id %></td>
-        <td><%= course.name %></td>
+          <td><%= course.user_id %></td>
+          <td><%= course.id %></td>
+          <td><%= course.name %></td>
+          
+          <% if current_user.student? and %>
+            <td><%= @student.enrolled.where(course_id:course.id).first.status_type %></td>
+        <td><%#= link_to("Enroll in the Course", enrolled_path( @student.enrolled.where(course_id: course).first,{:course_id: course.id,:status_type => 1}), :method => :put, :confirm => "Are you sure?") %></td>
         
-        <% if current_user.student? and %>
-          <td><%= @student.enrolled.where(course_id:course.id).first.status_type %></td>
-      <td><%#= link_to("Enroll in the Course", enrolled_path( @student.enrolled.where(course_id: course).first,{:course_id: course.id,:status_type => 1}), :method => :put, :confirm => "Are you sure?") %></td>
-      
-        <% if(@student.enrolled.where(course_id:course.id).first.inactive?) %>
-          <td><%= link_to "Enroll in the Course", 
-              enrolled_path(@student.enrolled.where(course_id: course).first, 
-                        :enrolled => { :status_type => "active"}),
-              :method => :put, 
-              :confirm => "Are you sure?" %> </td>
-            <% end %>
-      <% end %>
-        
-        <td><%= link_to 'Show', course %></td>
-        
-        <% if can? :update, course %>
-          <td><%= link_to 'Edit', edit_course_path(course) %></td>
+          <% if(@student.enrolled.where(course_id:course.id).first.inactive?) %>
+            <td><%= link_to "Enroll in the Course", 
+                enrolled_path(@student.enrolled.where(course_id: course).first, 
+                          :enrolled => { :status_type => "active"}),
+                :method => :put, 
+                :confirm => "Are you sure?" %> </td>
+              <% end %>
         <% end %>
-        
-        <% if can? :destroy, course %>
-          <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
-        
-        <% if can? :create, Quiz %>
-          <td><%= link_to 'Make Quiz', new_course_quiz_path(course) %></td>
-        <% end %>
-        
-        <% if can? :create, Enrolled %>
-          <td> <%= link_to 'Add Students in Course', new_enrolled_path %></td>
-        <% end %>
-        
-        <td> <%= link_to 'View Quizzes in this Course',course_quizzes_path(course)  %></td>
-        
-        
+          
+          <td><%= link_to 'Show', course %></td>
+          
+          <% if can? :update, course %>
+            <td><%= link_to 'Edit', edit_course_path(course) %></td>
+          <% end %>
+          
+          <% if can? :destroy, course %>
+            <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+          
+          <% if can? :create, Quiz %>
+            <td><%= link_to 'Make Quiz', new_course_quiz_path(course) %></td>
+          <% end %>
+          
+          <% if can? :create, Enrolled %>
+            <td> <%= link_to 'Add Students in Course', new_enrolled_path %></td>
+          <% end %>
+          
+          <td> <%= link_to 'View Quizzes in this Course',course_quizzes_path(course)  %></td>
+          
+        <%# end %>
       </tr>
     <% end %>
   </tbody>
@@ -73,3 +76,4 @@
 <% if can? :create, Course %>
   <%= link_to 'New Course', new_course_path %>
 <% end %>
+</div>

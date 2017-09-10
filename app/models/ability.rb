@@ -9,14 +9,21 @@ class Ability
       can :manage, :all
       # can :manage, :educator
     elsif(user.educator?)
-      can :read, :all
+      # can :read, :all
       can :create,Course
       can :update,Course, :user_id => user.id
       can :destroy,Course, :user_id => user.id
-      can :read,Course, :user_id => user.id
+      can :read,Course do |course|
+        course.user_id == user.id
+        puts "bbaadd",course.user_id,user.id,course.user_id==user.id
+      end
+      
+      
       can :manage,Enrolled
       can :update,Educator,:user_id => user.id
-      can :manage, Quiz
+      can :manage, Quiz do |quiz|
+        quiz.course.user_id == user.id
+      end
       
     elsif user.student?
       cannot :manage,Course
